@@ -1,6 +1,5 @@
-<!doctype html>
-<html lang="en">
-  <head>
+<html>
+    <head>
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
@@ -82,9 +81,9 @@
     
     <!-- Custom styles for this template -->
     <link href="./dashboard.css" rel="stylesheet">
-  </head>
-  <body>
-    
+  
+    </head>
+<body>
 <header class="navbar navbar-dark sticky-top bg-dark flex-md-nowrap p-0 shadow">
   <a class="navbar-brand col-md-3 col-lg-2 me-0 px-3 fs-6" href="#">Company name</a>
   <button class="navbar-toggler position-absolute d-md-none collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#sidebarMenu" aria-controls="sidebarMenu" aria-expanded="false" aria-label="Toggle navigation">
@@ -177,16 +176,73 @@
     </nav>
 
     <main class="col-md-9 ms-sm-auto col-lg-10 px-md-4">
-      <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
-        <h1 class="h2">Dashboard</h1>
-      </div>
+    <div class="d-flex justify-content-between flex-wrap flex-md-nowrap align-items-center pt-3 pb-2 mb-3 border-bottom">
+        <h1 class="h2">Produtos</h1>
+        <!-- Button trigger modal -->
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal">
+        Cadastrar
+        </button>
+        <!-- Modal -->
+        <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title" id="exampleModalLabel">Cadastra novo produto</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body">
+                <form action="config/cadastrar.php" method="post" enctype="multipart/form-data">
+                    <div class="form-control">
+                        <label>Nome</label>
+                        <input type="text" class="form-control" name="nome"/>
+                        <label>Valor</label>
+                        <input type="text" class="form-control" name="valor"/>
+                        <label>Imagem</label>
+                        <input type="file" class="form-control" name="imagem"/>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                            <button type="submit" class="btn btn-primary">Cadastrar</button>
+                        </div>  
+                    </div>
+                </form>
+            </div>
+            
+            </div>
+        </div>
+        </div>
+
+    </div>
+    <h3>Produtos cadastrados</h3>
+    <table class="table table-striped">
+        <thead>
+            <tr>
+            <th scope="col">#ID</th>
+            <th scope="col">Nome</th>
+            <th scope="col">Valor</th>
+            <th scope="col">Ações</th>
+            </tr>
+        </thead>
+        <tbody>
+            <?php 
+             include("config/conexao.php");
+             $res = mysqli_query($link,"SELECT *FROM produtos");
+             while($show = mysqli_fetch_assoc($res)):
+            ?>
+            <tr>
+                <th scope="row"><?php echo $show['id_produto'] ?></th>
+                <td><?php echo $show['nome'] ?></td>
+                <td><?php echo $show['valor'] ?></td>
+                <td><a href="">Deletar</a> / <a href="">Editar</a></td>
+            </tr>
+            <?php 
+                endwhile;
+            ?>
+        </tbody>
+    </table>
     </main>
+    
   </div>
 </div>
-
-
-    <script src="../js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
-
-      <script src="https://cdn.jsdelivr.net/npm/feather-icons@4.28.0/dist/feather.min.js" integrity="sha384-uO3SXW5IuS1ZpFPKugNNWqTZRRglnUJK6UAZ/gxOX80nxEkN9NcGZTftn6RzhGWE" crossorigin="anonymous"></script><script src="https://cdn.jsdelivr.net/npm/chart.js@2.9.4/dist/Chart.min.js" integrity="sha384-zNy6FEbO50N+Cg5wap8IKA4M/ZnLJgzc6w2NqACZaK0u0FXfOWRRJOnQtpZun8ha" crossorigin="anonymous"></script><script src="dashboard.js"></script>
-  </body>
+<script src="../js/bootstrap.bundle.min.js" integrity="sha384-pprn3073KE6tl6bjs2QrFaJGz5/SUsLqktiwsUTF55Jfv3qYSDhgCecCxMW52nD2" crossorigin="anonymous"></script>
+</body>
 </html>
