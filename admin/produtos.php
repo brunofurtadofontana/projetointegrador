@@ -227,13 +227,68 @@
              include("config/conexao.php");
              $res = mysqli_query($link,"SELECT *FROM produtos");
              while($show = mysqli_fetch_assoc($res)):
+              $id_produto = $show['id_produto'];
+              $nome = $show['nome'];
+              $valor = $show['valor'];
+              $imagem = $show['imagem'];
             ?>
             <tr>
                 <th scope="row"><?php echo $show['id_produto'] ?></th>
                 <td><?php echo $show['nome'] ?></td>
                 <td><?php echo $show['valor'] ?></td>
-                <td><a href="">Deletar</a> / <a href="">Editar</a></td>
+                <td>
+                  <a class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#deleteModal<?php echo $id_produto ?>" href="">Deletar</a>
+                  <a class="btn btn-warning" data-bs-toggle="modal" data-bs-target="#editModal<?php echo $id_produto ?>" href="">Editar</a>
+                </td>
             </tr>
+            <!-- Modal Delete -->
+            <div class="modal fade" id="deleteModal<?php if($id_produto == $id_produto)echo $id_produto?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Deletar registro</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                     Você tem certeza que deseja deletar?
+                  </div>
+                  <div class="modal-footer">
+                    <form action="config/delete.php?id=<?php echo $id_produto?>" method="POST">
+                      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>
+                      <button type="submit" class="btn btn-primary">Deletar</button>
+                    </form>
+                  </div>
+                </div>
+              </div>
+            </div>
+            <!-- Modal Editar -->
+            <div class="modal fade" id="editModal<?php if($id_produto == $id_produto)echo $id_produto?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+              <div class="modal-dialog">
+                <div class="modal-content">
+                  <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Editar Registro</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                  </div>
+                  <div class="modal-body">
+                    <form action="config/edit.php" method="post" enctype="multipart/form-data">
+                        <div class="form-control">
+                            <label>Nome</label>
+                            <input type="text" value="<?php echo $nome?>" class="form-control" name="nome"/>
+                            <label>Valor</label>
+                            <input type="text" value="<?php echo $valor?>" class="form-control" name="valor"/>
+                            <label>Imagem</label>
+                            <input type="file" required class="form-control" name="imagem"/>
+                            <input type='hidden' value="<?php echo $id_produto ?>" name="id_produto"/>
+                            <div class="modal-footer">
+                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                <button type="submit" class="btn btn-primary">Atualizar</button>
+                            </div>  
+                        </div>
+                    </form>
+                </div>
+                </div>
+              </div>
+            </div>  
             <?php 
                 endwhile;
             ?>
